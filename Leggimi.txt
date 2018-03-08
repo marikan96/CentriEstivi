@@ -1,6 +1,11 @@
-Per buildare, posizionarsi su esplora risorse di windows nella cartella del progetto 
+1) posizionarsi su esplora risorse di windows nella cartella del progetto 
 (la cartella dove sono contenuti i file "ValuesController.cs", "AppSettings.cs" ecc ecc)
 e fare tasto destro del mouse in un punto vuoto, tenendo premuto il tasto shift, 
 poi scegliere "Apri finestra PowerShell qui".
-Digitare ng build e premere invio.
-Dopodichè far partire il progetto visual studio.
+
+2) digitare npm install e premere invio
+
+3)Digitare ng build e premere invio.
+4)Dopodichè far partire il progetto visual studio.
+
+Se non dovesse buildare perchè dice che manca angular/cli, digitare nmp install angular/cli e rifare ng build
