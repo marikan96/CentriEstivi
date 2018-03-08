@@ -1,0 +1,46 @@
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+  <h1 class="navbar-brand mb-0">Feedback Comune di Conegliano</h1>
+  <span class="navbar-text">
+      Utente loggato: {{currentUser.firstName}} - <a [routerLink]="['/login']">Logout</a>
+    </span>
+</nav>
+<br>
+
+
+<div class="input-group input-group-lg">
+
+  <input places-auto-complete
+         (place_changed)="placeChanged($event)"
+         [types]="['geocode']"
+         class="form-control"/>
+
+</div>
+
+<br>
+<br>
+
+<ngui-map [center]="center" (click)="onClick($event)">
+
+  <!--- marker dei feedback già inseriti -->
+  <marker *ngFor="let f of feedbacks" [position]="f.coordinate" (click)="feedbackDetails(f)"></marker>
+
+  <!--- marker nuovi  --->
+  <marker *ngFor="let pos of positions" [position]="pos" (click)="markerClicked($event)"></marker>
+
+</ngui-map>
+
+<div>
+    {{currentUser.address}} <br>
+    {{currentUser.city}}
+  
+</div>
+
+<div>
+  Export all feedbacks
+  <button (click)="exportFeedbacks()">Export</button>
+  <a download="Feedbacks.xlsx" href="{{ url }}" target="_blank">download</a>
+</div>
+
+
+
+

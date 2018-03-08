@@ -1,0 +1,9 @@
+<h5>Dettagli feedback: </h5>
+<b>Giudizio: </b> <span>{{model.giudizio}}</span> <br>
+<b>Descrizione: </b> <span>{{model.commento}}</span> <br>
+<b>Data segnalazione: </b> <span>{{model.createDate | date:"dd/MM/yyyy 'alle' h:mma"}}</span> <br>
+
+<br>
+<br>
+<button type="button" class="btn btn-danger btn-sm" (click)="deleteFeedback(model.id)">Cancella</button>
+<button type="button" class="btn btn-secondary btn-sm" (click)="close()">Chiudi</button>

@@ -1,0 +1,6 @@
+Per buildare, posizionarsi su esplora risorse di windows nella cartella del progetto 
+(la cartella dove sono contenuti i file "ValuesController.cs", "AppSettings.cs" ecc ecc)
+e fare tasto destro del mouse in un punto vuoto, tenendo premuto il tasto shift, 
+poi scegliere "Apri finestra PowerShell qui".
+Digitare ng build e premere invio.
+Dopodichè far partire il progetto visual studio.

@@ -1,0 +1,19 @@
+<h5>Inserisci nuovo feedback</h5>
+
+<button type="button" class="btn btn-success" (click)="changeValue('Ok')">Ok</button>
+<button type="button" class="btn btn-secondary" (click)="changeValue('Neutro')">Neutro</button>
+<button type="button" class="btn btn-danger" (click)="changeValue('Negativo')">Negativo</button>
+
+<br>
+
+<p *ngIf="model.giudizio">
+  Selezionato: {{model.giudizio}}
+</p>
+
+<input type="text" style="margin-top: 10px;" size="25" placeholder="commento..." [(ngModel)]="model.commento">
+
+<br>
+<br>
+
+<button type="button" class="btn btn-info" (click)="feedback()">Invia feedback</button>
+<button type="button" class="btn btn-secondary btn-sm" (click)="close()">Annulla</button>
