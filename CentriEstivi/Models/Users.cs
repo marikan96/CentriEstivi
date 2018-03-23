@@ -7,16 +7,18 @@ namespace CentriEstivi.Models
     {
         public int Id { get; set; }
         public string Email { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Street { get; set; }
-        public string StreetNr { get; set; }
+        public string Nome { get; set; }
+        public string Cognome { get; set; }
+        public string Via { get; set; }
+        public string Numero { get; set; }
         public string Cap { get; set; }
-        public string City { get; set; }
+        public string Citta { get; set; }
         public string Password { get; set; }
-        public string Code { get; set; }
-        public string Telephone { get; set; }
+        public string Cf { get; set; }
+        public string Telefono { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+        public bool IsAdmin { get; set; }
+        public bool? IdCentro { get; set; }
     }
 }

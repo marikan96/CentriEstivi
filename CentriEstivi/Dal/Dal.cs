@@ -13,7 +13,7 @@ namespace CentriEstivi
   {
     public static int RegisterUser(Users user)
     {
-      using (var db = new CentriEstiviContext())
+      using (var db = new CentriEstiviCustomContext())
       {
         var existingUser = db.Users.Where(u => u.Email == user.Email).FirstOrDefault();
         if (existingUser == null)
@@ -43,7 +43,7 @@ namespace CentriEstivi
     {
       if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
         return null;
-      using (var db = new CentriEstiviContext())
+      using (var db = new CentriEstiviCustomContext())
       {
         var user = db.Users.SingleOrDefault(x => x.Email == username);
 
@@ -89,6 +89,56 @@ namespace CentriEstivi
       }
 
       return true;
+    }
+
+    public static v_Bambini getBambino(int idbambino)
+    {
+      using (var db = new CentriEstiviCustomContext())
+      {
+        return db.v_Bambini.Where(b => b.IdBambino == idbambino).FirstOrDefault();
+      }
+    }
+
+    public static List<v_Bambini> getListaBambini(int idcentro, int idutente)
+    {
+      using (var db = new CentriEstiviCustomContext())
+      {
+        bool imAdmin = isAdmin(idutente);
+        if (imAdmin)
+        {
+          return db.v_Bambini.OrderBy(b => b.IdCentro).ThenBy(b1 => b1.Cognome).ThenBy(b2 => b2.Nome).ToList();
+        }
+        else
+        {
+          return db.v_Bambini.Where(b => b.IdCentro == idcentro).OrderBy(b1 => b1.Cognome).ThenBy(b2 => b2.Nome).ToList();
+        }
+      }
+    }
+
+    public static string DeleteBambino(int idbambino)
+    {
+      if (idbambino == 0)
+        return "Id non ricevuto";
+      using (var db = new CentriEstiviCustomContext())
+      {
+        var bambino = db.Bambini.Where(f => f.IdBambino == idbambino).FirstOrDefault();
+        if (bambino == null)
+        {
+          return "Bambino non trovato";
+        }
+
+        db.Bambini.Remove(bambino);
+        db.SaveChanges();
+        return string.Empty;
+      }
+    }
+
+    private static bool isAdmin(int idutente)
+    {
+      using (var db = new CentriEstiviCustomContext())
+      {
+        return db.Users.Where(u => u.Id == idutente).FirstOrDefault().IsAdmin;
+      }
     }
 
     //public static Feedbacks SaveFeedback(Feedbacks feedbackDto)
@@ -217,14 +267,14 @@ namespace CentriEstivi
       {
         Id = user.Id,
         Username = user.Email,
-        FirstName = user.Name,
-        LastName = user.Surname,
-        address = user.Street,
-        house_number = user.StreetNr,
+        FirstName = user.Nome,
+        LastName = user.Cognome,
+        address = user.Via,
+        house_number = user.Numero,
         cap = user.Cap,
-        city = user.City,
-        fiscal_code = user.Code,
-        tel_number = user.Telephone,
+        city = user.Citta,
+        fiscal_code = user.Cf,
+        tel_number = user.Telefono,
         Token = tokenString
       };
       return obj;
