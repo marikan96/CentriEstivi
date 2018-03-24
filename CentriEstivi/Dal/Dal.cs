@@ -327,7 +327,9 @@ namespace CentriEstivi
         city = user.Citta,
         fiscal_code = user.Cf,
         tel_number = user.Telefono,
-        Token = tokenString
+        Token = tokenString,
+        isadmin=user.IsAdmin,
+        idcentro = user.IdCentro        
       };
       return obj;
     }
