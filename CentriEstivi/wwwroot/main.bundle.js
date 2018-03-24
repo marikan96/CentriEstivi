@@ -486,6 +486,7 @@ var AuthenticationService = (function () {
             if (user && user.token) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('currentUser', JSON.stringify(user));
+                console.log(JSON.stringify(user));
             }
             return user;
         });
@@ -499,6 +500,62 @@ var AuthenticationService = (function () {
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["b" /* HttpClient */]])
     ], AuthenticationService);
     return AuthenticationService;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/_services/bambino.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BambinoService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var BambinoService = (function () {
+    function BambinoService(httpService) {
+        this.httpService = httpService;
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    }
+    BambinoService.prototype.getAll = function () {
+        //let params = new HttpParams().set("idcentro", this.currentUser.idcentro).set("idutente", this.currentUser.id);
+        var idcentro = this.currentUser.idcentro;
+        var idutente = this.currentUser.id;
+        return this.httpService.get('/api/bambini/getlistabambini/' + idcentro + '/' + idutente, this.jwt());
+    };
+    BambinoService.prototype.jwt = function (bytearray) {
+        if (bytearray === void 0) { bytearray = false; }
+        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser && currentUser.token) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]().set('Authorization', "Bearer " + currentUser.token);
+            if (bytearray) {
+                return {
+                    headers: headers,
+                    responseType: 'text'
+                };
+            }
+            else {
+                return { headers: headers };
+            }
+        }
+    };
+    BambinoService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["b" /* HttpClient */]])
+    ], BambinoService);
+    return BambinoService;
 }());
 
 
@@ -644,7 +701,10 @@ var FeedbackService = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__authentication_service__ = __webpack_require__("../../../../../src/app/_services/authentication.service.ts");
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__authentication_service__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__user_service__ = __webpack_require__("../../../../../src/app/_services/user.service.ts");
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__user_service__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_2__user_service__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__bambino_service__ = __webpack_require__("../../../../../src/app/_services/bambino.service.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_3__bambino_service__["a"]; });
+
 
 
 
@@ -699,6 +759,89 @@ var UserService = (function () {
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["b" /* HttpClient */]])
     ], UserService);
     return UserService;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/anagrafica/anagrafica.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/anagrafica/anagrafica.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div *ngFor=\"let b of bambini\">\r\n  <p>{{b.Nome}}</p>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/anagrafica/anagrafica.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AnagraficaComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_index__ = __webpack_require__("../../../../../src/app/_services/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_feedback_service__ = __webpack_require__("../../../../../src/app/_services/feedback.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var AnagraficaComponent = (function () {
+    function AnagraficaComponent(ref, bambinoService, dialog, feedbackService) {
+        this.ref = ref;
+        this.bambinoService = bambinoService;
+        this.dialog = dialog;
+        this.feedbackService = feedbackService;
+        this.bambini = [];
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    }
+    AnagraficaComponent.prototype.ngOnInit = function () {
+        this.loadListaBambini();
+    };
+    AnagraficaComponent.prototype.loadListaBambini = function () {
+        var _this = this;
+        this.bambinoService.getAll().subscribe(function (bambini) {
+            _this.bambini = bambini;
+        });
+    };
+    AnagraficaComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-anagrafica',
+            template: __webpack_require__("../../../../../src/app/anagrafica/anagrafica.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/anagrafica/anagrafica.component.css")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */],
+            __WEBPACK_IMPORTED_MODULE_1__services_index__["c" /* BambinoService */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_material__["a" /* MatDialog */],
+            __WEBPACK_IMPORTED_MODULE_3__services_feedback_service__["a" /* FeedbackService */]])
+    ], AnagraficaComponent);
+    return AnagraficaComponent;
 }());
 
 
@@ -774,24 +917,25 @@ var AppComponent = (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__("../../../platform-browser/esm5/platform-browser.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_home_component__ = __webpack_require__("../../../../../src/app/home/home.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__report_report_component__ = __webpack_require__("../../../../../src/app/report/report.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__register_register_component__ = __webpack_require__("../../../../../src/app/register/register.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__app_routing__ = __webpack_require__("../../../../../src/app/app.routing.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__guards__ = __webpack_require__("../../../../../src/app/_guards/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services__ = __webpack_require__("../../../../../src/app/_services/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__helpers__ = __webpack_require__("../../../../../src/app/_helpers/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__directives__ = __webpack_require__("../../../../../src/app/_directives/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ngui_map__ = __webpack_require__("../../../../@ngui/map/dist/@ngui/map.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("../../../common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__home_home_component__ = __webpack_require__("../../../../../src/app/home/home.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__report_report_component__ = __webpack_require__("../../../../../src/app/report/report.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__register_register_component__ = __webpack_require__("../../../../../src/app/register/register.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_forms__ = __webpack_require__("../../../forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__app_routing__ = __webpack_require__("../../../../../src/app/app.routing.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__guards__ = __webpack_require__("../../../../../src/app/_guards/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services__ = __webpack_require__("../../../../../src/app/_services/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__helpers__ = __webpack_require__("../../../../../src/app/_helpers/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__directives__ = __webpack_require__("../../../../../src/app/_directives/index.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__feedback_modal_feedback_modal_component__ = __webpack_require__("../../../../../src/app/feedback-modal/feedback-modal.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/esm5/animations.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__services_feedback_service__ = __webpack_require__("../../../../../src/app/_services/feedback.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__feedback_details_modal_feedback_details_modal_component__ = __webpack_require__("../../../../../src/app/feedback-details-modal/feedback-details-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__anagrafica_anagrafica_component__ = __webpack_require__("../../../../../src/app/anagrafica/anagrafica.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -818,48 +962,51 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["K" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__app_component__["a" /* AppComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__directives__["a" /* AlertComponent */],
-                __WEBPACK_IMPORTED_MODULE_3__home_home_component__["a" /* HomeComponent */],
-                __WEBPACK_IMPORTED_MODULE_4__report_report_component__["a" /* ReportComponent */],
-                __WEBPACK_IMPORTED_MODULE_5__login_login_component__["a" /* LoginComponent */],
-                __WEBPACK_IMPORTED_MODULE_6__register_register_component__["a" /* RegisterComponent */],
+                __WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */],
+                __WEBPACK_IMPORTED_MODULE_14__directives__["a" /* AlertComponent */],
+                __WEBPACK_IMPORTED_MODULE_4__home_home_component__["a" /* HomeComponent */],
+                __WEBPACK_IMPORTED_MODULE_5__report_report_component__["a" /* ReportComponent */],
+                __WEBPACK_IMPORTED_MODULE_6__login_login_component__["a" /* LoginComponent */],
+                __WEBPACK_IMPORTED_MODULE_7__register_register_component__["a" /* RegisterComponent */],
                 __WEBPACK_IMPORTED_MODULE_15__feedback_modal_feedback_modal_component__["a" /* FeedbackModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_19__feedback_details_modal_feedback_details_modal_component__["a" /* FeedbackDetailsModalComponent */]
+                __WEBPACK_IMPORTED_MODULE_19__feedback_details_modal_feedback_details_modal_component__["a" /* FeedbackDetailsModalComponent */],
+                __WEBPACK_IMPORTED_MODULE_20__anagrafica_anagrafica_component__["a" /* AnagraficaComponent */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
-                __WEBPACK_IMPORTED_MODULE_7__angular_forms__["c" /* FormsModule */],
-                __WEBPACK_IMPORTED_MODULE_8__angular_common_http__["c" /* HttpClientModule */],
-                __WEBPACK_IMPORTED_MODULE_14__ngui_map__["a" /* NguiMapModule */].forRoot({ apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyB-t7KwWp25oYH_Gch23_qV5t9q_yRc9YY' }),
-                __WEBPACK_IMPORTED_MODULE_9__app_routing__["a" /* routing */],
+                __WEBPACK_IMPORTED_MODULE_8__angular_forms__["c" /* FormsModule */],
+                __WEBPACK_IMPORTED_MODULE_2__angular_common__["b" /* CommonModule */],
+                __WEBPACK_IMPORTED_MODULE_9__angular_common_http__["c" /* HttpClientModule */],
+                __WEBPACK_IMPORTED_MODULE_10__app_routing__["a" /* routing */],
                 __WEBPACK_IMPORTED_MODULE_17__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
                 __WEBPACK_IMPORTED_MODULE_16__angular_material__["b" /* MatDialogModule */]
             ],
             providers: [
-                __WEBPACK_IMPORTED_MODULE_10__guards__["a" /* AuthGuard */],
-                __WEBPACK_IMPORTED_MODULE_11__services__["a" /* AlertService */],
-                __WEBPACK_IMPORTED_MODULE_11__services__["b" /* AuthenticationService */],
-                __WEBPACK_IMPORTED_MODULE_11__services__["c" /* UserService */],
+                __WEBPACK_IMPORTED_MODULE_11__guards__["a" /* AuthGuard */],
+                __WEBPACK_IMPORTED_MODULE_12__services__["a" /* AlertService */],
+                __WEBPACK_IMPORTED_MODULE_12__services__["b" /* AuthenticationService */],
+                __WEBPACK_IMPORTED_MODULE_12__services__["d" /* UserService */],
                 {
-                    provide: __WEBPACK_IMPORTED_MODULE_8__angular_common_http__["a" /* HTTP_INTERCEPTORS */],
-                    useClass: __WEBPACK_IMPORTED_MODULE_12__helpers__["a" /* JwtInterceptor */],
+                    provide: __WEBPACK_IMPORTED_MODULE_9__angular_common_http__["a" /* HTTP_INTERCEPTORS */],
+                    useClass: __WEBPACK_IMPORTED_MODULE_13__helpers__["a" /* JwtInterceptor */],
                     multi: true
                 },
+                __WEBPACK_IMPORTED_MODULE_12__services__["c" /* BambinoService */],
                 __WEBPACK_IMPORTED_MODULE_18__services_feedback_service__["a" /* FeedbackService */],
-                __WEBPACK_IMPORTED_MODULE_12__helpers__["b" /* fakeBackendProvider */]
+                __WEBPACK_IMPORTED_MODULE_13__helpers__["b" /* fakeBackendProvider */]
             ],
             entryComponents: [
                 __WEBPACK_IMPORTED_MODULE_15__feedback_modal_feedback_modal_component__["a" /* FeedbackModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_19__feedback_details_modal_feedback_details_modal_component__["a" /* FeedbackDetailsModalComponent */]
             ],
-            bootstrap: [__WEBPACK_IMPORTED_MODULE_2__app_component__["a" /* AppComponent */]]
+            bootstrap: [__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */]]
         })
     ], AppModule);
     return AppModule;
@@ -1101,7 +1248,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/home/home.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-toggleable-md navbar-light bg-faded\">\r\n  <h1 class=\"navbar-brand mb-0\">Feedback Comune di Conegliano</h1>\r\n  <span class=\"navbar-text\">\r\n      Utente loggato: {{currentUser.firstName}} - <a [routerLink]=\"['/login']\">Logout</a>\r\n    </span>\r\n</nav>\r\n<br>\r\n\r\n\r\n<div class=\"input-group input-group-lg\">\r\n\r\n  <input places-auto-complete\r\n         (place_changed)=\"placeChanged($event)\"\r\n         [types]=\"['geocode']\"\r\n         class=\"form-control\"/>\r\n\r\n</div>\r\n\r\n<br>\r\n<br>\r\n\r\n<ngui-map [center]=\"center\" (click)=\"onClick($event)\">\r\n\r\n  <!--- marker dei feedback già inseriti -->\r\n  <marker *ngFor=\"let f of feedbacks\" [position]=\"f.coordinate\" (click)=\"feedbackDetails(f)\"></marker>\r\n\r\n  <!--- marker nuovi  --->\r\n  <marker *ngFor=\"let pos of positions\" [position]=\"pos\" (click)=\"markerClicked($event)\"></marker>\r\n\r\n</ngui-map>\r\n\r\n<div>\r\n    {{currentUser.address}} <br>\r\n    {{currentUser.city}}\r\n  \r\n</div>\r\n\r\n<div>\r\n  Export all feedbacks\r\n  <button (click)=\"exportFeedbacks()\">Export</button>\r\n  <a download=\"Feedbacks.xlsx\" href=\"{{ url }}\" target=\"_blank\">download</a>\r\n</div>\r\n\r\n\r\n\r\n\r\n"
+module.exports = "<nav class=\"navbar navbar-toggleable-md navbar-light bg-faded\">\r\n  <h1 class=\"navbar-brand mb-0\">Gestione centri estivi</h1>\r\n  <span class=\"navbar-text\">\r\n    Utente loggato: {{currentUser.firstName}}\r\n    <a class=\"navbar-text\" *ngIf=\"isAdmin\"><b>Admin</b></a>\r\n    - <a [routerLink]=\"['/login']\">Logout</a>\r\n  </span>\r\n</nav>\r\n\r\n<br>\r\n\r\n<app-anagrafica></app-anagrafica>\r\n\r\n\r\n<!--<div>\r\n  Export all feedbacks\r\n  <button (click)=\"exportFeedbacks()\">Export</button>\r\n  <a download=\"Feedbacks.xlsx\" href=\"{{ url }}\" target=\"_blank\">download</a>\r\n</div>-->\r\n\r\n\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -1113,9 +1260,7 @@ module.exports = "<nav class=\"navbar navbar-toggleable-md navbar-light bg-faded
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services__ = __webpack_require__("../../../../../src/app/_services/index.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__feedback_modal_feedback_modal_component__ = __webpack_require__("../../../../../src/app/feedback-modal/feedback-modal.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_feedback_service__ = __webpack_require__("../../../../../src/app/_services/feedback.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__feedback_details_modal_feedback_details_modal_component__ = __webpack_require__("../../../../../src/app/feedback-details-modal/feedback-details-modal.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_feedback_service__ = __webpack_require__("../../../../../src/app/_services/feedback.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1129,8 +1274,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-
 //import * as FileSaver from "file-saver";
 var HomeComponent = (function () {
     function HomeComponent(ref, userService, dialog, feedbackService) {
@@ -1139,47 +1282,20 @@ var HomeComponent = (function () {
         this.dialog = dialog;
         this.feedbackService = feedbackService;
         this.users = [];
-        this.positions = []; // le posizioni aggiunte al click
         this.feedbacks = []; // elenco dei feedback
-        this.address = {};
-        this.marker = {
-            display: true,
-            lat: null,
-            lng: null,
-        };
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.center = 'Conegliano TV';
+        this.isAdmin = this.currentUser.isadmin;
     }
-    HomeComponent.prototype.onClick = function (event) {
-        // al click sulla mappa aggiunge un marker all'array
-        // sarebbe da poterne mettere solo uno alla volta e poter cancellare se ho sbagliato
-        if (event instanceof MouseEvent)
-            return;
-        this.positions.push(event.latLng);
-        event.target.panTo(event.latLng);
-    };
-    HomeComponent.prototype.feedbackDetails = function (feedback) {
-        var modal = this.dialog.open(__WEBPACK_IMPORTED_MODULE_5__feedback_details_modal_feedback_details_modal_component__["a" /* FeedbackDetailsModalComponent */]);
-        modal.componentInstance.model = feedback;
-    };
-    HomeComponent.prototype.markerClicked = function (_a) {
-        var marker = _a.target;
-        this.marker.lat = marker.getPosition().lat();
-        this.marker.lng = marker.getPosition().lng();
-        var modal = this.dialog.open(__WEBPACK_IMPORTED_MODULE_3__feedback_modal_feedback_modal_component__["a" /* FeedbackModalComponent */]);
-        modal.componentInstance.marker = this.marker;
-    };
-    HomeComponent.prototype.initialized = function (autocomplete) {
-        this.autocomplete = autocomplete;
-    };
-    HomeComponent.prototype.placeChanged = function (place) {
-        this.center = place.geometry.location;
-        for (var i = 0; i < place.address_components.length; i++) {
-            var addressType = place.address_components[i].types[0];
-            this.address[addressType] = place.address_components[i].long_name;
-        }
-        this.ref.detectChanges();
-    };
+    //feedbackDetails(feedback: Feedback) {
+    //  const modal = this.dialog.open(FeedbackDetailsModalComponent);
+    //  modal.componentInstance.model = feedback;
+    //}
+    //markerClicked({ target: marker }) {
+    //  this.marker.lat = marker.getPosition().lat();
+    //  this.marker.lng = marker.getPosition().lng();
+    //  const modal = this.dialog.open(FeedbackModalComponent);
+    //  modal.componentInstance.marker = this.marker;
+    //}
     HomeComponent.prototype.ngOnInit = function () {
         //this.loadAllUsers();
         this.loadAllFeedbacks();
@@ -1231,9 +1347,9 @@ var HomeComponent = (function () {
             moduleId: module.i.toString()
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */],
-            __WEBPACK_IMPORTED_MODULE_1__services__["c" /* UserService */],
+            __WEBPACK_IMPORTED_MODULE_1__services__["d" /* UserService */],
             __WEBPACK_IMPORTED_MODULE_2__angular_material__["a" /* MatDialog */],
-            __WEBPACK_IMPORTED_MODULE_4__services_feedback_service__["a" /* FeedbackService */]])
+            __WEBPACK_IMPORTED_MODULE_3__services_feedback_service__["a" /* FeedbackService */]])
     ], HomeComponent);
     return HomeComponent;
 }());
@@ -1436,7 +1552,7 @@ var RegisterComponent = (function () {
             moduleId: module.i.toString()
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* Router */],
-            __WEBPACK_IMPORTED_MODULE_1__services__["c" /* UserService */],
+            __WEBPACK_IMPORTED_MODULE_1__services__["d" /* UserService */],
             __WEBPACK_IMPORTED_MODULE_1__services__["a" /* AlertService */]])
     ], RegisterComponent);
     return RegisterComponent;

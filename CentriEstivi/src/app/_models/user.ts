@@ -4,6 +4,8 @@ export class User {
   password: string;
   firstName: string;
   lastName: string;
+  isadmin: boolean;
+  idcentro: number;
 
   address: string;
   house_number: string;

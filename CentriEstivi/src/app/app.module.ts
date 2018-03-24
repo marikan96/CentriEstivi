@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
-
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home/home.component';
@@ -13,7 +13,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import {routing} from './app.routing';
 import {AuthGuard} from './_guards';
-import {AlertService, AuthenticationService, UserService} from './_services';
+import {AlertService, AuthenticationService, UserService, BambinoService} from './_services';
 import {fakeBackendProvider, JwtInterceptor} from './_helpers';
 import {AlertComponent} from './_directives';
 
@@ -23,6 +23,7 @@ import {MatDialog, MatDialogModule} from "@angular/material";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FeedbackService} from "./_services/feedback.service";
 import { FeedbackDetailsModalComponent } from './feedback-details-modal/feedback-details-modal.component';
+import { AnagraficaComponent } from './anagrafica/anagrafica.component';
 
 @NgModule({
   declarations: [
@@ -33,13 +34,14 @@ import { FeedbackDetailsModalComponent } from './feedback-details-modal/feedback
     LoginComponent,
     RegisterComponent,
     FeedbackModalComponent,
-    FeedbackDetailsModalComponent
+    FeedbackDetailsModalComponent,
+    AnagraficaComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    CommonModule,
     HttpClientModule,
-    NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyB-t7KwWp25oYH_Gch23_qV5t9q_yRc9YY'}),
     routing,
     BrowserAnimationsModule,
     MatDialogModule
@@ -53,7 +55,8 @@ import { FeedbackDetailsModalComponent } from './feedback-details-modal/feedback
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
       multi: true
-    },    
+    },
+    BambinoService,
     FeedbackService,
     fakeBackendProvider
   ],

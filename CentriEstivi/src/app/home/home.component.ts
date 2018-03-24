@@ -17,67 +17,34 @@ import { FeedbackDetailsModalComponent } from "../feedback-details-modal/feedbac
 export class HomeComponent implements OnInit {
   url: string;
   currentUser: User;
+  isAdmin: boolean;
   users: User[] = [];
-
-  positions: any[] = []; // le posizioni aggiunte al click
 
   feedbacks: Feedback[] = []; // elenco dei feedback
 
-  autocomplete: google.maps.places.Autocomplete;
-  address: any = {};
-  center: any;
-
-  marker = {
-    display: true,
-    lat: null,
-    lng: null,
-  };
-
-  constructor(private ref: ChangeDetectorRef,
+   constructor(private ref: ChangeDetectorRef,
     private userService: UserService,
     private dialog: MatDialog,
     private feedbackService: FeedbackService) {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.center = 'Conegliano TV';
+     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+     this.isAdmin = this.currentUser.isadmin;
+     
   }
 
-
-  onClick(event) {
-
-    // al click sulla mappa aggiunge un marker all'array
-    // sarebbe da poterne mettere solo uno alla volta e poter cancellare se ho sbagliato
-    if (event instanceof MouseEvent) return;
-
-    this.positions.push(event.latLng);
-    event.target.panTo(event.latLng);
-  }
-
-  feedbackDetails(feedback: Feedback) {
-    const modal = this.dialog.open(FeedbackDetailsModalComponent);
-    modal.componentInstance.model = feedback;
-  }
+  //feedbackDetails(feedback: Feedback) {
+  //  const modal = this.dialog.open(FeedbackDetailsModalComponent);
+  //  modal.componentInstance.model = feedback;
+  //}
 
 
-  markerClicked({ target: marker }) {
-    this.marker.lat = marker.getPosition().lat();
-    this.marker.lng = marker.getPosition().lng();
+  //markerClicked({ target: marker }) {
+  //  this.marker.lat = marker.getPosition().lat();
+  //  this.marker.lng = marker.getPosition().lng();
 
-    const modal = this.dialog.open(FeedbackModalComponent);
-    modal.componentInstance.marker = this.marker;
-  }
+  //  const modal = this.dialog.open(FeedbackModalComponent);
+  //  modal.componentInstance.marker = this.marker;
+  //}
 
-  initialized(autocomplete: google.maps.places.Autocomplete) {
-    this.autocomplete = autocomplete;
-  }
-
-  placeChanged(place) {
-    this.center = place.geometry.location;
-    for (let i = 0; i < place.address_components.length; i++) {
-      const addressType = place.address_components[i].types[0];
-      this.address[addressType] = place.address_components[i].long_name;
-    }
-    this.ref.detectChanges();
-  }
 
   ngOnInit() {
     //this.loadAllUsers();
