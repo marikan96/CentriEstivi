@@ -9,3 +9,13 @@ poi scegliere "Apri finestra PowerShell qui".
 4)Dopodichè far partire il progetto visual studio.
 
 Se non dovesse buildare perchè dice che manca angular/cli, digitare nmp install angular/cli e rifare ng build
+
+
+
+settare come output directory "wwwroot" nel file .angular-cli.json
+
+
+
+scaffold-DbContext "Server=DESKTOP-TP30ME5\SQLExpress;;Database=CentriEstivi;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -force
+
+C:\Program Files\Microsoft SQL Server\MSSQL14.SQLEXPRESS\MSSQL\DATA

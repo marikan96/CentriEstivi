@@ -19,6 +19,6 @@ namespace CentriEstivi.Models
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public bool IsAdmin { get; set; }
-        public bool? IdCentro { get; set; }
+        public int? IdCentro { get; set; }
     }
 }
