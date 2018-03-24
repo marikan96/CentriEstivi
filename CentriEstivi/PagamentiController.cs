@@ -4,53 +4,48 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
-//using AspNetWebApi.Extensions;
 using System.IO;
 using System.Net;
 using System.Web;
-//using System.Web.Http;
 using System.Data.SqlClient;
 using System.Runtime.Serialization.Json;
 using Microsoft.CSharp;
 using CentriEstivi.Models;
-//using System.Web.Http;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
-//using WebApi.Entities;
 using Microsoft.AspNetCore.Authorization;
 using System.Text;
 using System.Net.Http.Headers;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace CentriEstivi
 {
 
   [Authorize(AuthenticationSchemes = "Bearer")]
   [Route("api/[controller]")]
-  public class BambiniController : Controller
+  public class PagamentiController : Controller
   {
 
-    [HttpGet("{idbambino}")]
-    public object Get(int idbambino)
+    [HttpGet("{idpagamento}")]
+    public object Get(int idpagamento)
     {
-      return Dal.getBambino(idbambino);
+      return Dal.getBambino(idpagamento);
     }
 
     [HttpGet("{idcentro}/{idutente}")]
-    [Route("getlistabambini")]
-    public object GetListaBambini(int idcentro, int idutente)
+    [Route("getlistapagamenti")]
+    public object GetListaPagamenti(int idcentro, int idutente)
     {
-      return Dal.getListaBambini(idcentro, idutente);
+      return Dal.getListaPagamenti(idcentro, idutente);
     }
 
-    [HttpDelete("{idbambino}")]
-    public IActionResult DeleteBambino(int idbambino)
+    [HttpDelete("{idpagamento}")]
+    public IActionResult DeletePagamento(int idpagamento)
     {
       try
       {
-        string result = Dal.DeleteBambino(idbambino);
+        string result = Dal.DeletePagamento(idpagamento);
         if (result == string.Empty)
         {
           return Ok();
@@ -67,20 +62,19 @@ namespace CentriEstivi
     }
 
     [HttpPost]
-    [Route("savebambino")]
-    public IActionResult SaveBambino([FromBody]Bambini b)
+    [Route("savepagamento")]
+    public IActionResult SavePagamento([FromBody]Pagamenti p)
     {
       try
-      {
-        //return Ok();
-        v_Bambini savedBambino = Dal.SaveBambino(b);
-        if (savedBambino == null)
+      {        
+        v_Pagamenti savedPagamento = Dal.SavePagamento(p);      
+        if (savedPagamento == null)
         {
           return BadRequest("Informazioni mancanti");
         }
 
         //return Ok(Dal.mapFeedback(savedfeedback));
-        return Ok(savedBambino);
+        return Ok(savedPagamento);
       }
       catch (Exception ex)
       {

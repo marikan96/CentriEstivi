@@ -11,6 +11,9 @@ namespace CentriEstivi
 {
   public class Dal
   {
+
+    #region user login/registration
+
     public static int RegisterUser(Users user)
     {
       using (var db = new CentriEstiviCustomContext())
@@ -91,11 +94,15 @@ namespace CentriEstivi
       return true;
     }
 
+    #endregion
+
+    #region bambini
+
     public static v_Bambini getBambino(int idbambino)
     {
       using (var db = new CentriEstiviCustomContext())
       {
-        return db.v_Bambini.Where(b => b.IdBambino == idbambino).FirstOrDefault();
+        return db.v_Bambini.Find(idbambino);
       }
     }
 
@@ -121,7 +128,7 @@ namespace CentriEstivi
         return "Id non ricevuto";
       using (var db = new CentriEstiviCustomContext())
       {
-        var bambino = db.Bambini.Where(f => f.IdBambino == idbambino).FirstOrDefault();
+        var bambino = db.Bambini.Find(idbambino);
         if (bambino == null)
         {
           return "Bambino non trovato";
@@ -133,27 +140,91 @@ namespace CentriEstivi
       }
     }
 
+    public static v_Bambini SaveBambino(Bambini b)
+    {
+      if (b == null || b.IdCentro == 0 || string.IsNullOrEmpty(b.Cognome) || string.IsNullOrEmpty(b.Nome)
+        || string.IsNullOrEmpty(b.Citta)
+        || string.IsNullOrEmpty(b.Via)
+        || b.DataNascita == null)
+        return null;
+      using (var db = new CentriEstiviCustomContext())
+      {
+
+        db.Bambini.Add(b);
+        db.SaveChanges();
+
+        //load saved data
+        //b contiene già l'id generato     
+        var savedB = db.v_Bambini.Find(b.IdBambino);
+        return savedB;
+      }
+    }
+
+    #endregion
+
+    #region pagamenti   
+
+    public static List<v_Pagamenti> getListaPagamenti(int idcentro, int idutente)
+    {
+      using (var db = new CentriEstiviCustomContext())
+      {
+        bool imAdmin = isAdmin(idutente);
+        if (imAdmin)
+        {
+          return db.v_Pagamenti.OrderBy(b => b.IdCentro).ThenBy(b1 => b1.DataPagamento).ToList();
+        }
+        else
+        {
+          return db.v_Pagamenti.Where(b => b.IdCentro == idcentro).OrderBy(b1 => b1.DataPagamento).ToList();
+        }
+      }
+    }
+
+    public static string DeletePagamento(int idpagamento)
+    {
+      if (idpagamento == 0)
+        return "Id non ricevuto";
+      using (var db = new CentriEstiviCustomContext())
+      {
+        var p = db.Pagamenti.Find(idpagamento);
+        if (p == null)
+        {
+          return "Bambino non trovato";
+        }
+
+        db.Pagamenti.Remove(p);
+        db.SaveChanges();
+        return string.Empty;
+      }
+    }
+
+    public static v_Pagamenti SavePagamento(Pagamenti p)
+    {
+      if (p == null || p.IdBambino==0 || p.Importo==0
+        || p.DataPagamento == null)
+        return null;
+      using (var db = new CentriEstiviCustomContext())
+      {
+
+        db.Pagamenti.Add(p);
+        db.SaveChanges();
+
+        //load saved data
+        //b contiene già l'id generato     
+        var savedP = db.v_Pagamenti.Find(p.IdBambino);
+        return savedP;
+      }
+    }
+
+    #endregion
+
     private static bool isAdmin(int idutente)
     {
       using (var db = new CentriEstiviCustomContext())
       {
-        return db.Users.Where(u => u.Id == idutente).FirstOrDefault().IsAdmin;
+        return db.Users.Find(idutente).IsAdmin;
       }
     }
-
-    //public static Feedbacks SaveFeedback(Feedbacks feedbackDto)
-    //{
-    //  if (feedbackDto == null || string.IsNullOrEmpty(feedbackDto.Giudizio) || string.IsNullOrEmpty(feedbackDto.Commento))
-    //    return null;
-    //  using (var db = new CentriEstiviContext())
-    //  {
-
-    //    db.Feedbacks.Add(feedbackDto);
-    //    db.SaveChanges();
-
-    //    return feedbackDto;  //contiene già l'id generato        
-    //  }
-    //}
 
     public static List<object> GetUserFeedbacks(int userId)
     {
@@ -172,7 +243,7 @@ namespace CentriEstivi
       //}
 
       return null;
-    }   
+    }
 
     public static byte[] ExportFeedbacks(int year)
     {

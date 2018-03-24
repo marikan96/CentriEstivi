@@ -10,9 +10,18 @@ namespace CentriEstivi.Models
   {
 
     public virtual DbSet<v_Bambini> v_Bambini { get; set; }
+    public virtual DbSet<v_Pagamenti> v_Pagamenti { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+      modelBuilder.Entity<v_Pagamenti>(entity =>
+      {
+        entity.HasKey(e => e.IdPagamento);
+
+        entity.Property(e => e.DataPagamento).HasColumnType("datetime");
+        
+      });
+
       modelBuilder.Entity<v_Bambini>(entity =>
       {
         entity.HasKey(e => e.IdBambino);
