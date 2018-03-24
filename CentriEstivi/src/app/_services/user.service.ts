@@ -18,9 +18,9 @@ export class UserService {
   create(user: User) {
     //return this.http.post('/api/users', user);
     return this.httpService.post('/api/values/registeruser', {
-      Name: user.firstName, Surname: user.lastName, Email: user.eMail, Password: user.password
-      , Street: user.address, CAP: user.cap, StreetNr: user.house_number, City: user.city, Telephone: user.tel_number
-      ,Code: user.fiscal_code
+      Nome: user.firstName, Cognome: user.lastName, Email: user.eMail, Password: user.password
+      , Via: user.address, Cap: user.cap, Numero: user.house_number, Citta: user.city, Telefono: user.tel_number
+      ,Cf: user.fiscal_code
     })
   }
 

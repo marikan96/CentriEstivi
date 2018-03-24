@@ -32,6 +32,40 @@ namespace CentriEstivi
   public class BambiniController : Controller
   {
 
+    [HttpGet("{idbambino}")]
+    public object Get(int idbambino)
+    {
+      return Dal.getBambino(idbambino);
+    }
+
+    [HttpGet("{idcentro}/{idutente}")]
+    [Route("GetListaBambini")]
+    public object GetListaBambini(int idcentro, int idutente)
+    {
+      return Dal.getListaBambini(idcentro, idutente);
+    }
+
+    [HttpDelete("{idbambino}")]
+    public IActionResult DeleteBambino(int idbambino)
+    {
+      try
+      {
+        string result = Dal.DeleteBambino(idbambino);
+        if (result == string.Empty)
+        {
+          return Ok();
+        }
+        else
+        {
+          return BadRequest(result);
+        }
+      }
+      catch (Exception ex)
+      {
+        return BadRequest(ex.Message);
+      }
+    }
+
     //  [HttpPost]
     //  [Route("savefeedback")]
     //  public IActionResult SaveFeedback([FromBody]Feedbacks feedback)
@@ -55,40 +89,6 @@ namespace CentriEstivi
     //    }
     //  }
 
-
-    [HttpGet("{idbambino}")]
-    public object Get(int idbambino)
-    {
-      return Dal.getBambino(idbambino);
-    }
-
-    [HttpGet("{idcentro}/{idutente}")]
-    [Route("GetListaBambini")]
-    public object GetListaBambini(int idcentro, int idutente)
-    {
-      return Dal.getListaBambini(idcentro, idutente);
-    }
-
-    //  [HttpDelete("{feedbackid}")]
-    //  public IActionResult DeleteFeedback(int feedbackid)
-    //  {
-    //    try
-    //    {
-    //      string result = Dal.DeleteFeedback(feedbackid);
-    //      if (result == string.Empty)
-    //      {
-    //        return Ok();
-    //      }
-    //      else
-    //      {
-    //        return BadRequest(result);
-    //      }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //      return BadRequest(ex.Message);
-    //    }
-    //  }
 
     //  [HttpPost]
     //  [AllowAnonymous]

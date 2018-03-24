@@ -172,26 +172,7 @@ namespace CentriEstivi
       //}
 
       return null;
-    }
-
-    public static string DeleteFeedback(int id)
-    {
-      if (id == 0)
-        return "Id non ricevuto";
-      //using (var db = new CentriEstiviContext())
-      //{
-      //  var feedback = db.Feedbacks.Where(f => f.Id == id).FirstOrDefault();
-      //  if (feedback == null)
-      //  {
-      //    return "Feedback non trovato";
-      //  }
-
-      //  db.Feedbacks.Remove(feedback);
-      //  db.SaveChanges();
-      //  return string.Empty;
-      //}
-      return null;
-    }
+    }   
 
     public static byte[] ExportFeedbacks(int year)
     {
