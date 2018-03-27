@@ -1,0 +1,17 @@
+.title {
+  color: #393738;
+}
+
+.subtitle {
+  color: #57524C;
+}
+
+.checkmark {
+  height: 25px;
+  width: 25px;
+}
+
+.button {
+  cursor: pointer;
+}
+

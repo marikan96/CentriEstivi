@@ -1,0 +1,168 @@
+<h3>Dettaglio bambino</h3>
+
+<div *ngIf="!bambinoResult">
+  <ng-progress></ng-progress>
+</div>
+
+<div class="row">
+  <div class="container col-sm-6" *ngIf="bambinoResult">
+
+    <label for="nome">Nome: </label>
+    <div class="input-group">
+      <input id="nome" type="text" class="form-control" placeholder="nome" required
+             [(ngModel)]="bambinoResult.nome">
+    </div>
+
+    <label for="cognome">Cognome: </label>
+    <div class="input-group">
+      <input id="cognome" type="text" class="form-control" placeholder="cognome" required
+             [(ngModel)]="bambinoResult.cognome">
+    </div>
+
+    <label for="datanascita">Data di nascita: </label>
+    <div class="input-group">
+      <input id="datanascita" type="text" datetime="yyyy-MM-dd" class="form-control" placeholder="datanascita" required
+             [(ngModel)]="bambinoResult.dataNascita">
+    </div>
+
+    <label for="via">Via: </label>
+    <div class="input-group">
+      <input id="via" type="text" class="form-control" placeholder="via" required
+             [(ngModel)]="bambinoResult.via">
+    </div>
+
+    <label for="citta">Città: </label>
+    <div class="input-group">
+      <input id="citta" type="text" class="form-control" placeholder="citta" required
+             [(ngModel)]="bambinoResult.citta">
+    </div>
+
+    <label for="prov">Provincia: </label>
+    <div class="input-group">
+      <input id="prov" type="text" class="form-control" placeholder="provincia" required
+             [(ngModel)]="bambinoResult.provincia">
+    </div>
+
+    <label for="codfisc">Codice fiscale: </label>
+    <div class="input-group">
+      <input id="codfisc" type="text" class="form-control" placeholder="codice fiscale" required
+             [(ngModel)]="bambinoResult.cf">
+    </div>
+
+    <label for="certmed">Certificato medico: </label>
+    <div class="input-group">
+      <input id="certmed" type="text" class="form-control" placeholder="certificato medico" required
+             [(ngModel)]="bambinoResult.certificatoMedico">
+    </div>
+
+    <label for="scadcert">Scadenza certificato medico: </label>
+    <div class="input-group">
+      <input id="scadcert" type="text" class="form-control" datetime="yyyy-MM-dd" placeholder="scadenza certificato medico" required
+             [(ngModel)]="bambinoResult.dataScadenzaCertificato">
+    </div>
+
+    <label for="aics">AICS: </label>
+    <div class="input-group">
+      <input id="aics" type="text" class="form-control" datetime="yyyy-MM-dd" placeholder="AICS" required
+             [(ngModel)]="bambinoResult.aics">
+    </div>
+
+    <label for="datatess">Data tesseramento: </label>
+    <div class="input-group">
+      <input id="datatess" type="text" class="form-control" datetime="yyyy-MM-dd" placeholder="data tesseramento" required
+             [(ngModel)]="bambinoResult.dataTesseramento">
+    </div>
+
+  </div>
+
+  <div class="container col-sm-6" *ngIf="bambinoResult">
+
+    <label for="datains">Data inserimento: </label>
+    <div class="input-group">
+      <input id="datains" type="text" class="form-control" datetime="yyyy-MM-dd" placeholder="data inserimento" required
+             [(ngModel)]="bambinoResult.dataInserimento">
+    </div>
+    <!--//TODO: COS'è LA DATA INSERIMENTO-->
+
+    <label for="intolleranze">Intolleranze: </label>
+    <div class="input-group">
+      <input id="intolleranze" type="text" class="form-control" placeholder="intolleranze" required
+             [(ngModel)]="bambinoResult.intolleranze">
+    </div>
+
+    <label for="adultiritiro">Adulti autorizzati al ritiro: </label>
+    <div class="input-group">
+      <input id="adultiritiro" type="text" class="form-control" placeholder="adulti autorizzati al ritiro" required
+             [(ngModel)]="bambinoResult.adultiAutorizzati">
+    </div>
+
+    <label for="tel1">Telefono 1: </label>
+    <div class="input-group">
+      <input id="tel1" type="text" class="form-control" placeholder="telefono 1" required
+             [(ngModel)]="bambinoResult.telefono1">
+    </div>
+
+    <label for="tel2">Telefono 2: </label>
+    <div class="input-group">
+      <input id="tel2" type="text" class="form-control" placeholder="telefono 2"
+             [(ngModel)]="bambinoResult.telefono2">
+    </div>
+
+    <label for="tel3">Telefono 3: </label>
+    <div class="input-group">
+      <input id="tel3" type="text" class="form-control" placeholder="telefono 3"
+             [(ngModel)]="bambinoResult.telefono3">
+    </div>
+
+    <label for="tel4">Telefono 4: </label>
+    <div class="input-group">
+      <input id="tel4" type="text" class="form-control" placeholder="telefono 4"
+             [(ngModel)]="bambinoResult.telefono4">
+    </div>
+
+    <label for="email">Email: </label>
+    <div class="input-group">
+      <input id="email" type="email" class="form-control" placeholder="email" required
+             [(ngModel)]="bambinoResult.email">
+    </div>
+
+    <label for="orarioaut">Orario autorizzato: </label>
+    <div class="input-group">
+      <input id="orarioaut" type="text" class="form-control" placeholder="orario autorizzato" required
+             [(ngModel)]="bambinoResult.orarioAutorizzato">
+    </div>
+
+    <label for="totale">Totale: </label>
+    <div class="input-group">
+      <input id="totale" type="text" class="form-control" placeholder="totale" required
+             [(ngModel)]="bambinoResult.totale">
+    </div>
+
+    <label for="importodapag">Importo rimanente da pagare: </label>
+    <div class="input-group">
+      <input id="importodapag" type="text" class="form-control" placeholder="importo rimanente da pagare" required
+             [(ngModel)]="bambinoResult.daPagare">
+    </div>
+
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="container col-sm-3">
+    <button type="button" class="btn btn-success btn-lg" style="width: 20vw" (click)="edit()">
+      salva
+    </button>
+  </div>
+</div>
+
+<!--<div class="row">-->
+<!--&lt;!&ndash;TODO: CHIEDI FUNZIONE PER POTER AVERE LISTA CENTRI DROPDOWN&ndash;&gt;-->
+<!--<label for="desccentro">Descrizione centro: </label>-->
+<!--<div class="input-group">-->
+<!--<input id="desccentro" type="text" class="form-control" placeholder="descrizione centro" required-->
+<!--[(ngModel)]="bambinoResult.descrizioneCentro">-->
+<!--</div>-->
+<!--</div>-->
+

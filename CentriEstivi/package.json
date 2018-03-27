@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/router": "^5.0.0",
     "@ngui/map": "^0.20.0",
+    "@ngx-progressbar/core": "^4.1.1",
     "@types/googlemaps": "^3.30.2",
     "bootstrap": "^4.0.0-beta.2",
     "core-js": "^2.4.1",

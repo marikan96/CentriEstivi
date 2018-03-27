@@ -371,6 +371,49 @@ var JwtInterceptor = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/_models/bambino.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Bambino; });
+var Bambino = (function () {
+    function Bambino(b) {
+        this.idBambino = b.idBambino;
+        this.idCentro = b.idCentro;
+        this.cognome = b.cognome;
+        this.nome = b.nome;
+        this.dataNascita = b.dataNascita;
+        this.citta = b.citta;
+        this.via = b.via;
+        this.numero = b.numero;
+        this.provincia = b.provincia;
+        this.cf = b.cf;
+        this.certificatoMedico = b.certificatoMedico;
+        this.dataScadenzaCertificato = b.dataScadenzaCertificato;
+        this.intolleranze = b.intolleranze;
+        this.bollo = b.bollo;
+        this.impostaBollo = b.impostaBollo;
+        this.totale = b.totale;
+        this.daPagare = b.daPagare;
+        this.aics = b.aics;
+        this.adultiAutorizzati = b.adultiAutorizzati;
+        this.orarioAutorizzato = b.orarioAutorizzato;
+        this.telefono1 = b.telefono1;
+        this.telefono2 = b.telefono2;
+        this.telefono3 = b.telefono3;
+        this.telefono4 = b.telefono4;
+        this.email = b.email;
+        this.dataTesseramento = b.dataTesseramento;
+        this.dataInserimento = b.dataInserimento;
+        this.descrizioneCentro = b.descrizioneCentro;
+    }
+    return Bambino;
+}());
+
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/_models/feedback.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -385,6 +428,35 @@ var Feedback = (function () {
         };
     }
     return Feedback;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/_models/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user__ = __webpack_require__("../../../../../src/app/_models/user.ts");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bambino__ = __webpack_require__("../../../../../src/app/_models/bambino.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__bambino__["a"]; });
+
+
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/_models/user.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export User */
+var User = (function () {
+    function User() {
+    }
+    return User;
 }());
 
 
@@ -530,10 +602,39 @@ var BambinoService = (function () {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
     BambinoService.prototype.getAll = function () {
-        //let params = new HttpParams().set("idcentro", this.currentUser.idcentro).set("idutente", this.currentUser.id);
-        var idcentro = this.currentUser.idcentro;
+        return this.httpService.get('/api/bambini/getlistabambini/', this.jwtAll());
+    };
+    BambinoService.prototype.getBambino = function (id) {
+        return this.httpService.get('/api/bambini/' + id.toString(), this.jwt());
+    };
+    BambinoService.prototype.jwtAll = function (bytearray) {
+        if (bytearray === void 0) { bytearray = false; }
+        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        var idcentro = 1;
+        if (this.currentUser.idcentro > 0) {
+            idcentro = this.currentUser.idcentro;
+        }
+        else {
+            idcentro = 1;
+        }
+        console.log(idcentro);
         var idutente = this.currentUser.id;
-        return this.httpService.get('/api/bambini/getlistabambini/' + idcentro + '/' + idutente, this.jwt());
+        if (currentUser && currentUser.token) {
+            var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["d" /* HttpHeaders */]().set('Authorization', "Bearer " + currentUser.token);
+            var params = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["e" /* HttpParams */]()
+                .set('idcentro', idcentro.toString())
+                .set('idutente', idutente.toString());
+            if (bytearray) {
+                return {
+                    headers: headers,
+                    params: params,
+                    responseType: 'text'
+                };
+            }
+            else {
+                return { headers: headers, params: params };
+            }
+        }
     };
     BambinoService.prototype.jwt = function (bytearray) {
         if (bytearray === void 0) { bytearray = false; }
@@ -773,7 +874,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".title {\r\n  color: #393738;\r\n}\r\n\r\n.subtitle {\r\n  color: #57524C;\r\n}\r\n\r\n.checkmark {\r\n  height: 25px;\r\n  width: 25px;\r\n}\r\n\r\n.button {\r\n  cursor: pointer;\r\n}\r\n\r\n", ""]);
 
 // exports
 
@@ -786,7 +887,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/anagrafica/anagrafica.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngFor=\"let b of bambini\">\r\n  <p>{{b.Nome}}</p>\r\n</div>\r\n"
+module.exports = "<div *ngIf=\"bambini.length <= 0\">\r\n  <ng-progress></ng-progress>\r\n</div>\r\n<h2 class=\"title\" *ngIf=\"currentUser.isadmin\"> <!-- se è admin -->\r\n  Tutti i centri\r\n</h2>\r\n<h2 class=\"title\" *ngIf=\"!currentUser.isadmin\"> <!-- se non è admin -->\r\n  {{bambini[0].descrizioneCentro}}\r\n</h2>\r\n\r\n<h3 class=\"subtitle\">Lista bambini</h3>\r\n\r\n<table class=\"table\">\r\n  <thead>\r\n    <tr>\r\n      <th scope=\"col\">COGNOME</th>\r\n      <th scope=\"col\">NOME</th>\r\n      <th scope=\"col\">DATA NASCITA</th>\r\n      <th scope=\"col\">CERTIFICATO MEDICO</th>\r\n      <th scope=\"col\">SCADENZA CERTIFICATO MEDICO</th>\r\n      <th scope=\"col\">AICS</th>\r\n      <th scope=\"col\">DATA TESSERAMENTO</th>\r\n      <th scope=\"col\">QUOTA TESSERAMENTO</th>\r\n    </tr>\r\n  </thead>\r\n\r\n  <tbody>\r\n    <tr *ngFor=\"let b of bambini\">\r\n      <td>{{b.cognome}}</td>\r\n      <td>{{b.nome}}</td>\r\n      <td>{{b.dataNascita | date: 'dd/MM/yyyy'}}</td>\r\n      <td *ngIf=\"b.certificatoMedico == 1\">\r\n        <img src=\"../../assets/check.png\" class=\"checkmark\">\r\n      </td>\r\n      <!--TODO: SE NON C'è IL CERTIFICATO METTI UNA X ROSSA-->\r\n      <td>{{b.dataScadenzaCertificato | date: 'dd/MM/yyyy'}}</td>\r\n      <td>{{b.aics | date: 'dd/MM/yyyy'}}</td>\r\n      <td>{{b.dataTesseramento | date: 'dd/MM/yyyy'}}</td>\r\n      <td>10,00</td>\r\n      <td *ngIf=\"currentUser.isadmin\">{{b.descrizioneCentro}}</td>\r\n      <td>\r\n        <button class=\"btn btn-info button\"\r\n                (click)=\"modifica(b)\">\r\n          modifica/vedi tutto\r\n        </button>\r\n      </td>\r\n      <td>\r\n        <button class=\"btn btn-light button\"\r\n                (click)=\"settimane(b)\">\r\n          settimane\r\n        </button>\r\n      </td>\r\n      <td>\r\n        <button class=\"btn btn-success button\"\r\n                (click)=\"pagamenti(b)\">\r\n          pagamenti\r\n        </button>\r\n      </td>\r\n    </tr>\r\n  </tbody>\r\n</table>\r\n"
 
 /***/ }),
 
@@ -799,6 +900,8 @@ module.exports = "<div *ngFor=\"let b of bambini\">\r\n  <p>{{b.Nome}}</p>\r\n</
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_index__ = __webpack_require__("../../../../../src/app/_services/index.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_feedback_service__ = __webpack_require__("../../../../../src/app/_services/feedback.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ngx_progressbar_core__ = __webpack_require__("../../../../@ngx-progressbar/core/esm5/ngx-progressbar-core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -812,23 +915,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var AnagraficaComponent = (function () {
-    function AnagraficaComponent(ref, bambinoService, dialog, feedbackService) {
+    function AnagraficaComponent(ref, bambinoService, dialog, feedbackService, progressBar, router) {
         this.ref = ref;
         this.bambinoService = bambinoService;
         this.dialog = dialog;
         this.feedbackService = feedbackService;
+        this.progressBar = progressBar;
+        this.router = router;
         this.bambini = [];
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
+    AnagraficaComponent.prototype.ngAfterViewInit = function () {
+        this.progressBar.start();
+    };
     AnagraficaComponent.prototype.ngOnInit = function () {
         this.loadListaBambini();
+        this.progressBar.complete();
     };
     AnagraficaComponent.prototype.loadListaBambini = function () {
         var _this = this;
         this.bambinoService.getAll().subscribe(function (bambini) {
             _this.bambini = bambini;
         });
+    };
+    AnagraficaComponent.prototype.modifica = function (b) {
+        this.router.navigate(['/bambini', b.idBambino]);
+    };
+    AnagraficaComponent.prototype.settimane = function (b) {
+        this.router.navigate(['/settimane', b.idBambino]);
+    };
+    AnagraficaComponent.prototype.pagamenti = function (b) {
+        this.router.navigate(['/pagamenti', b.idBambino]);
     };
     AnagraficaComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -839,7 +959,9 @@ var AnagraficaComponent = (function () {
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* ChangeDetectorRef */],
             __WEBPACK_IMPORTED_MODULE_1__services_index__["c" /* BambinoService */],
             __WEBPACK_IMPORTED_MODULE_2__angular_material__["a" /* MatDialog */],
-            __WEBPACK_IMPORTED_MODULE_3__services_feedback_service__["a" /* FeedbackService */]])
+            __WEBPACK_IMPORTED_MODULE_3__services_feedback_service__["a" /* FeedbackService */],
+            __WEBPACK_IMPORTED_MODULE_4__ngx_progressbar_core__["a" /* NgProgress */],
+            __WEBPACK_IMPORTED_MODULE_5__angular_router__["c" /* Router */]])
     ], AnagraficaComponent);
     return AnagraficaComponent;
 }());
@@ -869,7 +991,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n\r\n  <alert></alert>\r\n  <router-outlet></router-outlet>\r\n\r\n</div>\r\n"
+module.exports = "<div class=\"container-fluid\">\r\n\r\n  <alert></alert>\r\n  <router-outlet></router-outlet>\r\n\r\n</div>\r\n"
 
 /***/ }),
 
@@ -936,12 +1058,16 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__services_feedback_service__ = __webpack_require__("../../../../../src/app/_services/feedback.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__feedback_details_modal_feedback_details_modal_component__ = __webpack_require__("../../../../../src/app/feedback-details-modal/feedback-details-modal.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__anagrafica_anagrafica_component__ = __webpack_require__("../../../../../src/app/anagrafica/anagrafica.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__ngx_progressbar_core__ = __webpack_require__("../../../../@ngx-progressbar/core/esm5/ngx-progressbar-core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__edit_viewall_edit_viewall_component__ = __webpack_require__("../../../../../src/app/edit-viewall/edit-viewall.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -977,7 +1103,8 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_7__register_register_component__["a" /* RegisterComponent */],
                 __WEBPACK_IMPORTED_MODULE_15__feedback_modal_feedback_modal_component__["a" /* FeedbackModalComponent */],
                 __WEBPACK_IMPORTED_MODULE_19__feedback_details_modal_feedback_details_modal_component__["a" /* FeedbackDetailsModalComponent */],
-                __WEBPACK_IMPORTED_MODULE_20__anagrafica_anagrafica_component__["a" /* AnagraficaComponent */]
+                __WEBPACK_IMPORTED_MODULE_20__anagrafica_anagrafica_component__["a" /* AnagraficaComponent */],
+                __WEBPACK_IMPORTED_MODULE_22__edit_viewall_edit_viewall_component__["a" /* EditViewallComponent */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -986,7 +1113,8 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_9__angular_common_http__["c" /* HttpClientModule */],
                 __WEBPACK_IMPORTED_MODULE_10__app_routing__["a" /* routing */],
                 __WEBPACK_IMPORTED_MODULE_17__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
-                __WEBPACK_IMPORTED_MODULE_16__angular_material__["b" /* MatDialogModule */]
+                __WEBPACK_IMPORTED_MODULE_16__angular_material__["b" /* MatDialogModule */],
+                __WEBPACK_IMPORTED_MODULE_21__ngx_progressbar_core__["b" /* NgProgressModule */].forRoot()
             ],
             providers: [
                 __WEBPACK_IMPORTED_MODULE_11__guards__["a" /* AuthGuard */],
@@ -1026,6 +1154,8 @@ var AppModule = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_index__ = __webpack_require__("../../../../../src/app/login/index.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__register_index__ = __webpack_require__("../../../../../src/app/register/index.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__guards_index__ = __webpack_require__("../../../../../src/app/_guards/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__edit_viewall_edit_viewall_component__ = __webpack_require__("../../../../../src/app/edit-viewall/edit-viewall.component.ts");
+
 
 
 
@@ -1035,9 +1165,102 @@ var appRoutes = [
     { path: '', component: __WEBPACK_IMPORTED_MODULE_1__home_index__["a" /* HomeComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_4__guards_index__["a" /* AuthGuard */]] },
     { path: 'login', component: __WEBPACK_IMPORTED_MODULE_2__login_index__["a" /* LoginComponent */] },
     { path: 'register', component: __WEBPACK_IMPORTED_MODULE_3__register_index__["a" /* RegisterComponent */] },
+    { path: 'bambini/:id', component: __WEBPACK_IMPORTED_MODULE_5__edit_viewall_edit_viewall_component__["a" /* EditViewallComponent */] },
     { path: '**', redirectTo: '' }
 ];
 var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["d" /* RouterModule */].forRoot(appRoutes);
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/edit-viewall/edit-viewall.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".ng-valid[required], .ng-valid.required  {\r\n  border-left: 5px solid #42A948; /* green */\r\n}\r\n\r\n.ng-invalid:not(form)  {\r\n  border-left: 5px solid #a94442; /* red */\r\n}\r\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/edit-viewall/edit-viewall.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<h3>Dettaglio bambino</h3>\n\n<div class=\"row\">\n  <div class=\"container col-sm-6\" *ngIf=\"bambinoResult\">\n\n    <label for=\"nome\">Nome: </label>\n    <div class=\"input-group\">\n      <input id=\"nome\" type=\"text\" class=\"form-control\" placeholder=\"nome\" required\n             [(ngModel)]=\"bambinoResult.nome\">\n    </div>\n\n    <label for=\"cognome\">Cognome: </label>\n    <div class=\"input-group\">\n      <input id=\"cognome\" type=\"text\" class=\"form-control\" placeholder=\"cognome\" required\n             [(ngModel)]=\"bambinoResult.cognome\">\n    </div>\n\n    <label for=\"datanascita\">Data di nascita: </label>\n    <div class=\"input-group\">\n      <input id=\"datanascita\" type=\"text\" datetime=\"yyyy-MM-dd\" class=\"form-control\" placeholder=\"datanascita\" required\n             [(ngModel)]=\"bambinoResult.dataNascita\">\n    </div>\n\n    <label for=\"via\">Via: </label>\n    <div class=\"input-group\">\n      <input id=\"via\" type=\"text\" class=\"form-control\" placeholder=\"via\" required\n             [(ngModel)]=\"bambinoResult.via\">\n    </div>\n\n    <label for=\"citta\">Città: </label>\n    <div class=\"input-group\">\n      <input id=\"citta\" type=\"text\" class=\"form-control\" placeholder=\"citta\" required\n             [(ngModel)]=\"bambinoResult.citta\">\n    </div>\n\n    <label for=\"prov\">Provincia: </label>\n    <div class=\"input-group\">\n      <input id=\"prov\" type=\"text\" class=\"form-control\" placeholder=\"provincia\" required\n             [(ngModel)]=\"bambinoResult.provincia\">\n    </div>\n\n    <label for=\"codfisc\">Codice fiscale: </label>\n    <div class=\"input-group\">\n      <input id=\"codfisc\" type=\"text\" class=\"form-control\" placeholder=\"codice fiscale\" required\n             [(ngModel)]=\"bambinoResult.cf\">\n    </div>\n\n    <label for=\"certmed\">Certificato medico: </label>\n    <div class=\"input-group\">\n      <input id=\"certmed\" type=\"text\" class=\"form-control\" placeholder=\"certificato medico\" required\n             [(ngModel)]=\"bambinoResult.certificatoMedico\">\n    </div>\n\n    <label for=\"scadcert\">Scadenza certificato medico: </label>\n    <div class=\"input-group\">\n      <input id=\"scadcert\" type=\"text\" class=\"form-control\" datetime=\"yyyy-MM-dd\" placeholder=\"scadenza certificato medico\" required\n             [(ngModel)]=\"bambinoResult.dataScadenzaCertificato\">\n    </div>\n\n    <label for=\"aics\">AICS: </label>\n    <div class=\"input-group\">\n      <input id=\"aics\" type=\"text\" class=\"form-control\" datetime=\"yyyy-MM-dd\" placeholder=\"AICS\" required\n             [(ngModel)]=\"bambinoResult.aics\">\n    </div>\n\n    <label for=\"datatess\">Data tesseramento: </label>\n    <div class=\"input-group\">\n      <input id=\"datatess\" type=\"text\" class=\"form-control\" datetime=\"yyyy-MM-dd\" placeholder=\"data tesseramento\" required\n             [(ngModel)]=\"bambinoResult.dataTesseramento\">\n    </div>\n\n  </div>\n\n  <div class=\"container col-sm-6\" *ngIf=\"bambinoResult\">\n\n    <label for=\"datains\">Data inserimento: </label>\n    <div class=\"input-group\">\n      <input id=\"datains\" type=\"text\" class=\"form-control\" datetime=\"yyyy-MM-dd\" placeholder=\"data inserimento\" required\n             [(ngModel)]=\"bambinoResult.dataInserimento\">\n    </div>\n    <!--//TODO: COS'è LA DATA INSERIMENTO-->\n\n    <label for=\"intolleranze\">Intolleranze: </label>\n    <div class=\"input-group\">\n      <input id=\"intolleranze\" type=\"text\" class=\"form-control\" placeholder=\"intolleranze\" required\n             [(ngModel)]=\"bambinoResult.intolleranze\">\n    </div>\n\n    <label for=\"adultiritiro\">Adulti autorizzati al ritiro: </label>\n    <div class=\"input-group\">\n      <input id=\"adultiritiro\" type=\"text\" class=\"form-control\" placeholder=\"adulti autorizzati al ritiro\" required\n             [(ngModel)]=\"bambinoResult.adultiAutorizzati\">\n    </div>\n\n    <label for=\"tel1\">Telefono 1: </label>\n    <div class=\"input-group\">\n      <input id=\"tel1\" type=\"text\" class=\"form-control\" placeholder=\"telefono 1\" required\n             [(ngModel)]=\"bambinoResult.telefono1\">\n    </div>\n\n    <label for=\"tel2\">Telefono 2: </label>\n    <div class=\"input-group\">\n      <input id=\"tel2\" type=\"text\" class=\"form-control\" placeholder=\"telefono 2\"\n             [(ngModel)]=\"bambinoResult.telefono2\">\n    </div>\n\n    <label for=\"tel3\">Telefono 3: </label>\n    <div class=\"input-group\">\n      <input id=\"tel3\" type=\"text\" class=\"form-control\" placeholder=\"telefono 3\"\n             [(ngModel)]=\"bambinoResult.telefono3\">\n    </div>\n\n    <label for=\"tel4\">Telefono 4: </label>\n    <div class=\"input-group\">\n      <input id=\"tel4\" type=\"text\" class=\"form-control\" placeholder=\"telefono 4\"\n             [(ngModel)]=\"bambinoResult.telefono4\">\n    </div>\n\n    <label for=\"email\">Email: </label>\n    <div class=\"input-group\">\n      <input id=\"email\" type=\"email\" class=\"form-control\" placeholder=\"email\" required\n             [(ngModel)]=\"bambinoResult.email\">\n    </div>\n\n    <label for=\"orarioaut\">Orario autorizzato: </label>\n    <div class=\"input-group\">\n      <input id=\"orarioaut\" type=\"text\" class=\"form-control\" placeholder=\"orario autorizzato\" required\n             [(ngModel)]=\"bambinoResult.orarioAutorizzato\">\n    </div>\n\n    <label for=\"totale\">Totale: </label>\n    <div class=\"input-group\">\n      <input id=\"totale\" type=\"text\" class=\"form-control\" placeholder=\"totale\" required\n             [(ngModel)]=\"bambinoResult.totale\">\n    </div>\n\n    <label for=\"importodapag\">Importo rimanente da pagare: </label>\n    <div class=\"input-group\">\n      <input id=\"importodapag\" type=\"text\" class=\"form-control\" placeholder=\"importo rimanente da pagare\" required\n             [(ngModel)]=\"bambinoResult.daPagare\">\n    </div>\n\n  </div>\n</div>\n\n<br>\n\n<div class=\"row\">\n  <div class=\"container col-sm-3\">\n    <button type=\"button\" class=\"btn btn-success btn-lg\" style=\"width: 20vw\" (click)=\"edit()\">\n      salva\n    </button>\n  </div>\n</div>\n\n<!--<div class=\"row\">-->\n<!--&lt;!&ndash;TODO: CHIEDI FUNZIONE PER POTER AVERE LISTA CENTRI DROPDOWN&ndash;&gt;-->\n<!--<label for=\"desccentro\">Descrizione centro: </label>-->\n<!--<div class=\"input-group\">-->\n<!--<input id=\"desccentro\" type=\"text\" class=\"form-control\" placeholder=\"descrizione centro\" required-->\n<!--[(ngModel)]=\"bambinoResult.descrizioneCentro\">-->\n<!--</div>-->\n<!--</div>-->\n\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/edit-viewall/edit-viewall.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EditViewallComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models__ = __webpack_require__("../../../../../src/app/_models/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services__ = __webpack_require__("../../../../../src/app/_services/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_switchMap__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/switchMap.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ngx_progressbar_core__ = __webpack_require__("../../../../@ngx-progressbar/core/esm5/ngx-progressbar-core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var EditViewallComponent = (function () {
+    function EditViewallComponent(bambinoService, route, progressBar) {
+        this.bambinoService = bambinoService;
+        this.route = route;
+        this.progressBar = progressBar;
+    }
+    EditViewallComponent.prototype.ngAfterViewInit = function () {
+        this.progressBar.start();
+    };
+    EditViewallComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route.params
+            .switchMap(function (params) { return _this.bambinoService.getBambino(+params['id']); })
+            .subscribe(function (result) { return _this.bambinoResult = result; });
+        this.progressBar.complete();
+    };
+    EditViewallComponent.prototype.edit = function () {
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1__models__["a" /* Bambino */])
+    ], EditViewallComponent.prototype, "bambino", void 0);
+    EditViewallComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+            selector: 'app-edit-viewall',
+            template: __webpack_require__("../../../../../src/app/edit-viewall/edit-viewall.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/edit-viewall/edit-viewall.component.css")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__services__["c" /* BambinoService */],
+            __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */],
+            __WEBPACK_IMPORTED_MODULE_6__ngx_progressbar_core__["a" /* NgProgress */]])
+    ], EditViewallComponent);
+    return EditViewallComponent;
+}());
+
 
 
 /***/ }),

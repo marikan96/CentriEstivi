@@ -24,6 +24,10 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FeedbackService} from "./_services/feedback.service";
 import { FeedbackDetailsModalComponent } from './feedback-details-modal/feedback-details-modal.component';
 import { AnagraficaComponent } from './anagrafica/anagrafica.component';
+import {BrowserXhr} from '@angular/common/http/src/xhr';
+import {NgProgressModule} from '@ngx-progressbar/core';
+import { EditViewallComponent } from './edit-viewall/edit-viewall.component';
+import { PagamentiComponent } from './pagamenti/pagamenti.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +39,9 @@ import { AnagraficaComponent } from './anagrafica/anagrafica.component';
     RegisterComponent,
     FeedbackModalComponent,
     FeedbackDetailsModalComponent,
-    AnagraficaComponent
+    AnagraficaComponent,
+    EditViewallComponent,
+    PagamentiComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +50,8 @@ import { AnagraficaComponent } from './anagrafica/anagrafica.component';
     HttpClientModule,
     routing,
     BrowserAnimationsModule,
-    MatDialogModule
+    MatDialogModule,
+    NgProgressModule.forRoot()
   ],
   providers: [
     AuthGuard,

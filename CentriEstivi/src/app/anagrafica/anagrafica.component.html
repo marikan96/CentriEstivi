@@ -1,3 +1,61 @@
-<div *ngFor="let b of bambini">
-  <p>{{b.Nome}}</p>
+<div *ngIf="bambini.length <= 0">
+  <ng-progress></ng-progress>
 </div>
+<h2 class="title" *ngIf="currentUser.isadmin"> <!-- se è admin -->
+  Tutti i centri
+</h2>
+<h2 class="title" *ngIf="!currentUser.isadmin"> <!-- se non è admin -->
+  {{bambini[0].descrizioneCentro}}
+</h2>
+
+<h3 class="subtitle">Lista bambini</h3>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">COGNOME</th>
+      <th scope="col">NOME</th>
+      <th scope="col">DATA NASCITA</th>
+      <th scope="col">CERTIFICATO MEDICO</th>
+      <th scope="col">SCADENZA CERTIFICATO MEDICO</th>
+      <th scope="col">AICS</th>
+      <th scope="col">DATA TESSERAMENTO</th>
+      <th scope="col">QUOTA TESSERAMENTO</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let b of bambini">
+      <td>{{b.cognome}}</td>
+      <td>{{b.nome}}</td>
+      <td>{{b.dataNascita | date: 'dd/MM/yyyy'}}</td>
+      <td *ngIf="b.certificatoMedico == 1">
+        <img src="../../assets/check.png" class="checkmark">
+      </td>
+      <!--TODO: SE NON C'è IL CERTIFICATO METTI UNA X ROSSA-->
+      <td>{{b.dataScadenzaCertificato | date: 'dd/MM/yyyy'}}</td>
+      <td>{{b.aics | date: 'dd/MM/yyyy'}}</td>
+      <td>{{b.dataTesseramento | date: 'dd/MM/yyyy'}}</td>
+      <td>10,00</td>
+      <td *ngIf="currentUser.isadmin">{{b.descrizioneCentro}}</td>
+      <td>
+        <button class="btn btn-info button"
+                (click)="modifica(b)">
+          modifica/vedi tutto
+        </button>
+      </td>
+      <td>
+        <button class="btn btn-light button"
+                (click)="settimane(b)">
+          settimane
+        </button>
+      </td>
+      <td>
+        <button class="btn btn-success button"
+                (click)="pagamenti(b)">
+          pagamenti
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
